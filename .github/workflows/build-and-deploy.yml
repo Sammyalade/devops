@@ -35,10 +35,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name:
-          Debugging: List Files
-          run: ls -la
-
       - name: Build Docker image
         run: docker build -t sammyalade/devops:latest .
 
