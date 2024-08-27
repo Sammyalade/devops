@@ -7,6 +7,4 @@ import africa.semicolon.userapplication.dtos.response.RegisterResponse;
 public interface UserService {
      RegisterResponse signUp(SignUpRequest signUpRequest);
      SignInResponse signIn(SignInRequest signIn);
-
-
 }
