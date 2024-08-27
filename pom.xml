@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>africa.semicolon</groupId>
-	<artifactId>user-application</artifactId>
+	<artifactId>devops</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-application</name>
 	<description>Demo project for Spring Boot</description>
