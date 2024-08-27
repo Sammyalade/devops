@@ -37,8 +37,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t sammyalade/devops:latest .
-              docker images
       
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
+        run: docker push sammyalade/devops:latest
