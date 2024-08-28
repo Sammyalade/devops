@@ -36,12 +36,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build --build-arg DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
-          --build-arg DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
-          --build-arg DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
-          --build-arg DATABASE_USER=${{ secrets.DATABASE_USER }} \
-          --build-arg DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
-          -t sammyalade/devops:latest .
-
+        run: |
+          docker build \
+                      --build-arg DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
+                      --build-arg DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
+                      --build-arg DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
+                      --build-arg DATABASE_USER=${{ secrets.DATABASE_USER }} \
+                      --build-arg DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+                      -t sammyalade/devops:latest .
       - name: Push Docker image to Docker Hub
         run: docker push sammyalade/devops:latest
