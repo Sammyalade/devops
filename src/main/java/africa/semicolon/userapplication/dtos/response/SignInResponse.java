@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class SignInResponse {
     private String username;
     private String message;
+    private String token;
 }
