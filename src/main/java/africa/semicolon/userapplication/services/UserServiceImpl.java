@@ -9,6 +9,7 @@ import africa.semicolon.userapplication.repository.UserRepository;
 import africa.semicolon.userapplication.security.roles.Role;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,5 +26,12 @@ public class UserServiceImpl implements UserService{
         user.getRoles().add(Role.USER);
         repository.save(user);
         return modelMapper.map(user, RegisterResponse.class);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return repository.findByUsername(username).orElseThrow(
+                ()-> new UsernameNotFoundException("User not Found")
+        );
     }
 }
