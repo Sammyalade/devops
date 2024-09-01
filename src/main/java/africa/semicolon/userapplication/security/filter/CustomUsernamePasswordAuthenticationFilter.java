@@ -78,7 +78,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
     private static String generateAccessToken(Authentication authResult) {
         return JWT.create()
-                .withIssuer("MavericksHub")
+                .withIssuer("Zend_it")
                 .withArrayClaim("roles",
                         getClaimsFrom(authResult.getAuthorities()))
                 .withExpiresAt(Instant.now()

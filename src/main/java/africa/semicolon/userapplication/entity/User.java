@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private String username;
     private String email;
@@ -23,6 +24,6 @@ public class User {
     @CollectionTable(name = "user_roles")
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
 }

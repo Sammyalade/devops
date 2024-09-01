@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class UserController {
 
     @Autowired
@@ -24,14 +24,14 @@ public class UserController {
         return new ResponseEntity<>(userService.signUp(signUpRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/signIn")
-    public ResponseEntity<SignInResponse> loginUser(@RequestBody SignInRequest signIn) {
-        SignInResponse response = userService.signIn(signIn);
-        if (response.getMessage().equals("Login successful")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    @PostMapping("/signIn")
+//    public ResponseEntity<SignInResponse> loginUser(@RequestBody SignInRequest signIn) {
+//        SignInResponse response = userService.signIn(signIn);
+//        if (response.getMessage().equals("Login successful")) {
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 }
 

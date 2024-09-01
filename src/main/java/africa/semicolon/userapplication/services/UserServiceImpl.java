@@ -7,52 +7,24 @@ import africa.semicolon.userapplication.dtos.response.SignInResponse;
 import africa.semicolon.userapplication.entity.User;
 import africa.semicolon.userapplication.repository.UserRepository;
 import africa.semicolon.userapplication.security.roles.Role;
-import africa.semicolon.userapplication.security.service.TokenService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
-
-    private final UserRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
-
+public class UserServiceImpl implements UserService{
     @Autowired
-    public UserServiceImpl(UserRepository repository, BCryptPasswordEncoder passwordEncoder, TokenService tokenService) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
-    }
-
+    private UserRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public RegisterResponse signUp(SignUpRequest signUpRequest) {
-        User user = new User();
-        user.setUsername(signUpRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        User user = modelMapper.map(signUpRequest, User.class);
+        user.getRoles().add(Role.USER);
         repository.save(user);
-        return new RegisterResponse(user.getUsername(), "Registration successful");
+        return modelMapper.map(user, RegisterResponse.class);
     }
 
-    @Override
-    public SignInResponse signIn(SignInRequest signInRequest) {
-        Optional<User> userOptional = repository.findByUsername(signInRequest.getUsername());
-
-        if (userOptional.isEmpty() || !passwordEncoder.matches(signInRequest.getPassword(), userOptional.get().getPassword())) {
-            return new SignInResponse(null, "Invalid credentials", null);
-        }
-
-        User user = userOptional.get();
-        List<Role> roles = getUserRoles(user);
-        String token = tokenService.generateToken(user.getUsername(), roles);
-        return new SignInResponse(user.getUsername(), "Sign-in successful", token);
-    }
-
-    private List<Role> getUserRoles(User user) {
-        return user.getRoles();
-    }
 }

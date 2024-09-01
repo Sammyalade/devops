@@ -1,7 +1,9 @@
 package africa.semicolon.userapplication.security.filter;
 
-import africa.semicolon.userapplication.security.service.TokenService;
-import africa.semicolon.userapplication.security.roles.Role;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +25,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
-
-    public CustomAuthorizationFilter(TokenService tokenService) {
-        this.tokenService = tokenService;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,20 +38,20 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith(JWT_PREFIX)) {
-            try {
-                String token = authorizationHeader.substring(JWT_PREFIX.length()).strip();
-                String username = tokenService.getUsernameFromToken(token);
-                List<Role> roles = tokenService.getRolesFromToken(token);
+        if(authorizationHeader != null) {
+            String token = authorizationHeader.substring(JWT_PREFIX.length()).strip();
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC512("secret".getBytes()))
+                    .withIssuer("Zend_it")
+                    .withClaimPresence("roles")
+                    .build();
 
-                List<SimpleGrantedAuthority> authorities = Role.toAuthorities(roles);
+            DecodedJWT decodedJWT = verifier.verify(token);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (RuntimeException e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
-                return;
-            }
+            List<SimpleGrantedAuthority> authorities = decodedJWT.getClaim("roles").asList(SimpleGrantedAuthority.class);
+
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(null, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }
