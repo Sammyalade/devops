@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(c ->
-                        c.requestMatchers("/api/v1/auth/register").permitAll()
+                        c.requestMatchers("/api/v1/auth/signUp").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 )
