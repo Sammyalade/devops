@@ -45,8 +45,10 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
     private Authentication authenticate(SignInRequest signInRequest) {
         Authentication authentication = new
-                UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword());
-        Authentication authenticationResult =  authenticationManager.authenticate(authentication);
+                UsernamePasswordAuthenticationToken
+                (signInRequest.getUsername(), signInRequest.getPassword());
+        Authentication authenticationResult =
+                authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(authenticationResult);
         return authenticationResult;
     }
