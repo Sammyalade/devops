@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.POST;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -40,8 +42,8 @@ public class SecurityConfig {
                 .addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(c ->
-                        c.requestMatchers("/api/v1/auth/signUp").permitAll()
-                                .requestMatchers("/api/v1/auth/login").permitAll()
+                        c.requestMatchers(POST, "/api/v1/auth/signUp").permitAll()
+                                .requestMatchers(POST, "/api/v1/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .build();
