@@ -3,11 +3,13 @@ package africa.semicolon.userapplication.dtos.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
 public class SignInResponse {
     private String username;
     private String message;
+    private String token;
 }
