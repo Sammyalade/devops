@@ -26,5 +26,4 @@ public class UserServiceImpl implements UserService{
         repository.save(user);
         return modelMapper.map(user, RegisterResponse.class);
     }
-
 }
